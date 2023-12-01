@@ -2,10 +2,27 @@ import re
 import sys
 
 
-def get_calibration_value(line):
-    digits = re.findall(r"\d", line)
+spelled_digits = {
+    "one": "1",
+    "two": "2",
+    "three": "3",
+    "four": "4",
+    "five": "5",
+    "six": "6",
+    "seven": "7",
+    "eight": "8",
+    "nine": "9",
+}
 
-    return int(f"{digits[0]}{digits[-1]}")
+
+def get_calibration_value(line):
+    regex = "|".join([*spelled_digits.keys(), *spelled_digits.values()])
+
+    digits = re.findall(rf"(?=({regex}))", line)
+
+    mapped = [digit if digit.isdigit() else spelled_digits[digit] for digit in digits]
+
+    return int(f"{mapped[0]}{mapped[-1]}")
 
 
 def main():
