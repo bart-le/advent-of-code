@@ -1,20 +1,20 @@
+import math
 import re
 import sys
 
 
-colours = {
-    "red": 12,
-    "green": 13,
-    "blue": 14,
-}
+def get_set_power(sets):
+    colours = {
+        "red": 0,
+        "green": 0,
+        "blue": 0,
+    }
 
-
-def game_possible(sets):
     for count, colour in re.findall(r"(\d+) (\w+)", sets):
         if int(count) > colours[colour]:
-            return False
+            colours[colour] = int(count)
 
-    return True
+    return math.prod(colours.values())
 
 
 def main():
@@ -24,11 +24,10 @@ def main():
 
     total = 0
 
-    for index, line in enumerate(file.readlines(), 1):
+    for line in file.readlines():
         _, sets = line.strip().split(": ")
 
-        if game_possible(sets):
-            total += index
+        total += get_set_power(sets)
 
     file.close()
 
